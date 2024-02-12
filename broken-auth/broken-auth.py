@@ -49,7 +49,9 @@ def check_session_timeout():
         last_active_time = active_sessions.get(username, datetime.datetime.now())
         current_time = datetime.datetime.now()
 
-        if (current_time - last_active_time).days > 5000:
+        #Fixed issue where the session wouldn't timeout
+        time_difference = (current_time - last_active_time).seconds
+        if time_difference > 5:  # 5 seconds of inactivity
             del session['username']
             return redirect(url_for('login'))
 
